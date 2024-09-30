@@ -3,6 +3,7 @@ package com.stockbooster.controller;
 
 import com.stockbooster.dto.CategoryDTO;
 import com.stockbooster.dto.common.ApiResponse;
+import com.stockbooster.exception.CategoryNotFoundException;
 import com.stockbooster.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class CategoryController {
         List<CategoryDTO> categoryList=categoryService.findAll();
         return ResponseEntity
                 .status(HttpStatus.FOUND)
-                .body(new ApiResponse("Here's the category list",categoryList));
+                .body(ApiResponse.successReturn("Here's the category list",categoryList));
     }
 
     @GetMapping("/public/categories/{id}")
@@ -31,7 +32,7 @@ public class CategoryController {
         CategoryDTO category=categoryService.findById(id);
         return  ResponseEntity
                 .status(HttpStatus.FOUND)
-                .body(new ApiResponse("Here's the category you looking for:",category));
+                .body(ApiResponse.successReturn("Here's the category you looking for:",category));
         /*在 ResponseEntity 的构建过程中，顺序是很重要的，
         因为每个方法调用都会返回一个新的 ResponseEntity.Builder 实例，并且这个实例会依赖之前的设置。
         因此，调用的顺序需要遵循下面的逻辑：
@@ -47,7 +48,7 @@ public class CategoryController {
         categoryService.save(categoryDTO);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ApiResponse("Category added"));
+                .body(ApiResponse.successVoid("Category added"));
     }
 
     @DeleteMapping("/admin/categories/{id}")
@@ -55,7 +56,7 @@ public class CategoryController {
         categoryService.delete(id);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body(new ApiResponse("category deleted"));
+                .body( ApiResponse.successVoid("category deleted"));
 //                .ok(new ApiMsg("delete category successful"));
         /*ResponseEntity.noContent()：
         创建一个 ResponseEntity 构建器，它设置状态码为 204 No Content。
@@ -65,9 +66,15 @@ public class CategoryController {
 
     @PutMapping("/admin/categories/{id}")
     public ResponseEntity<ApiResponse> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
-        categoryService.update(id, categoryDTO);
-        return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(new ApiResponse("category updated"));
+        try {
+            categoryService.update(id, categoryDTO);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(ApiResponse.successVoid("category updated"));
+        }
+        catch (CategoryNotFoundException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ApiResponse.failure("Category not found"));
+        }
 
     }
 
