@@ -1,0 +1,21 @@
+根据您的类结构，我建议使用以下API来模拟数据：
+
+1. JSONPlaceholder (https://jsonplaceholder.typicode.com/)
+   - 用于基本的用户数据结构
+   - 适用于：BuyerDTO, VendorDTO, Buyer, Vendor
+
+2. Faker API (https://fakerapi.it/en)
+   - 提供多样化的假数据
+   - 适用于：AddressDTO, Address, ProductDTO, Product
+
+3. DummyJSON (https://dummyjson.com/)
+   - 提供更详细的电商相关数据
+   - 适用于：ProductDTO, Product, CategoryDTO, Category, CartDTO, Cart, OrderDTO, Order
+
+4. Random Data API (https://random-data-api.com/)
+   - 提供多种类型的随机数据
+   - 适用于：ShopDTO, Shop, StockDTO, Stock
+
+5. Mockaroo (https://www.mockaroo.com/)
+   - 允许创建自定义的数据结构
+   - 可用于填补其他API无法覆盖的特定需求

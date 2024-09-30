@@ -1,6 +1,7 @@
 package com.stockbooster.controller;
 
 
+import com.stockbooster.dto.ApiMsg;
 import com.stockbooster.dto.CategoryDTO;
 import com.stockbooster.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,6 @@ import java.util.List;
 public class CategoryController {
 
     private final CategoryService categoryService;
-
-
 
     @GetMapping("/public/categories")
     public ResponseEntity<List<CategoryDTO>> findAllCategory() {
@@ -52,11 +51,10 @@ public class CategoryController {
     }
 
     @DeleteMapping("/admin/categories/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<ApiMsg> deleteCategory(@PathVariable Long id) {
         categoryService.delete(id);
         return ResponseEntity
-                .noContent()
-                .build();
+                .ok(new ApiMsg("delete category successful"));
         /*ResponseEntity.noContent()：
         创建一个 ResponseEntity 构建器，它设置状态码为 204 No Content。
         204 No Content 表示请求成功，但没有返回任何内容。

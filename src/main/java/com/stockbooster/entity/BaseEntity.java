@@ -17,23 +17,23 @@ import java.time.LocalDateTime;
 public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true)
+    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "created_at",updatable = false)
+    private LocalDateTime createdAt;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime updatedAt = LocalDateTime.now();
-
-    @Column(nullable = false,updatable = false)
+    @Column(name = "created_by", nullable = false, updatable = false)
     private String createdBy;
 
-    @Column(nullable = false)
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "updated_by", nullable = false)
     private String updatedBy;
 
-    @Column
-    private Boolean isDeleted = false;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted=false;
 
     private String getLoginUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -43,8 +43,9 @@ public class BaseEntity {
 
     @PrePersist
     protected void onPrePersist() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
         this.createdBy = getLoginUser();
         this.updatedBy = getLoginUser();
     }

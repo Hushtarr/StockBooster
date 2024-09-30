@@ -1,0 +1,19 @@
+server:
+  error:
+    include-stacktrace: never
+spring:
+  application:
+    name: StockBooster
+  datasource:
+    password: admin
+    url: jdbc:postgresql://localhost:5432/StockBooster
+    username: postgres
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+
+  sql:
+      init:
+        mode: always

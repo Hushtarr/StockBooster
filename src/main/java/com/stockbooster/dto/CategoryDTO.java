@@ -5,11 +5,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryDTO {
-
-    private Long categoryId;
+    private Long id;
     private String categoryName;
 }

@@ -1,6 +1,5 @@
 package com.stockbooster.controller;
 
-import com.nongye.dto.CategoryDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
