@@ -1,8 +1,8 @@
 package com.stockbooster.controller;
 
 
-import com.stockbooster.dto.ApiMsg;
 import com.stockbooster.dto.CategoryDTO;
+import com.stockbooster.dto.common.ApiResponse;
 import com.stockbooster.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,25 +12,26 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/")
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
 
     @GetMapping("/public/categories")
-    public ResponseEntity<List<CategoryDTO>> findAllCategory() {
+    public ResponseEntity<ApiResponse> findAllCategory() {
+        List<CategoryDTO> categoryList=categoryService.findAll();
         return ResponseEntity
                 .status(HttpStatus.FOUND)
-                .body(categoryService.findAll());
+                .body(new ApiResponse("Here's the category list",categoryList));
     }
 
     @GetMapping("/public/categories/{id}")
-    public ResponseEntity<CategoryDTO> findCategoryById (@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> findCategoryById (@PathVariable Long id) {
+        CategoryDTO category=categoryService.findById(id);
         return  ResponseEntity
                 .status(HttpStatus.FOUND)
-                .header("IM")// just a random header
-                .body(categoryService.findById(id));
+                .body(new ApiResponse("Here's the category you looking for:",category));
         /*在 ResponseEntity 的构建过程中，顺序是很重要的，
         因为每个方法调用都会返回一个新的 ResponseEntity.Builder 实例，并且这个实例会依赖之前的设置。
         因此，调用的顺序需要遵循下面的逻辑：
@@ -42,19 +43,20 @@ public class CategoryController {
     }
 
     @PostMapping("/admin/categories")
-    public ResponseEntity<Void> addCategory(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<ApiResponse> addCategory(@RequestBody CategoryDTO categoryDTO) {
         categoryService.save(categoryDTO);
-        System.out.println("Category added");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(null);
+                .body(new ApiResponse("Category added"));
     }
 
     @DeleteMapping("/admin/categories/{id}")
-    public ResponseEntity<ApiMsg> deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> deleteCategory(@PathVariable Long id) {
         categoryService.delete(id);
         return ResponseEntity
-                .ok(new ApiMsg("delete category successful"));
+                .status(HttpStatus.ACCEPTED)
+                .body(new ApiResponse("category deleted"));
+//                .ok(new ApiMsg("delete category successful"));
         /*ResponseEntity.noContent()：
         创建一个 ResponseEntity 构建器，它设置状态码为 204 No Content。
         204 No Content 表示请求成功，但没有返回任何内容。
@@ -62,9 +64,10 @@ public class CategoryController {
     }
 
     @PutMapping("/admin/categories/{id}")
-    public ResponseEntity<Void> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<ApiResponse> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
         categoryService.update(id, categoryDTO);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body(new ApiResponse("category updated"));
 
     }
 

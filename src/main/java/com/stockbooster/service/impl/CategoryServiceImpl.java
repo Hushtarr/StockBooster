@@ -21,8 +21,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void delete(Long id) {
-       categoryRepository.findById(id).ifPresent(obj->obj.setIsDeleted(true));
-       System.out.println("Category deleted");
+       Category category=categoryRepository.findById(id).orElseThrow(()->new CategoryNotFoundException("Category not found"));
+       category.setIsDeleted(true);
+       categoryRepository.save(category);
     }
 
     @Override
@@ -48,6 +49,6 @@ public class CategoryServiceImpl implements CategoryService {
     public void update(Long id,CategoryDTO categoryDTO) {
         Category category=categoryRepository.findById(id).orElseThrow(()->new CategoryNotFoundException("no such Category"));
         categoryDTO.setId(category.getId());
-        categoryRepository.save(mapper.convert(categoryDTO,Category.class));
+        save(categoryDTO);
     }
 }
