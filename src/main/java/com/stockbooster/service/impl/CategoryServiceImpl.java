@@ -4,11 +4,13 @@ package com.stockbooster.service.impl;
 import com.stockbooster.dto.CategoryDTO;
 import com.stockbooster.entity.Category;
 import com.stockbooster.exception.CategoryNotFoundException;
+import com.stockbooster.exception.IllegalArgumentException;
 import com.stockbooster.repository.CategoryRepository;
 import com.stockbooster.service.CategoryService;
 import com.stockbooster.util.MapperTool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO findById(Long id) {
-        Category category=categoryRepository.findById(id).orElseThrow(()->new CategoryNotFoundException("no such Category"));
+        Category category=categoryRepository.findById(id).orElseThrow(()->new IllegalArgumentException("no such Category"));
         return mapper.convert(category,CategoryDTO.class);
         }
 

@@ -1,5 +1,6 @@
 package com.stockbooster.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,6 +11,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryDTO {
+    @JsonProperty("Category ID")
     private Long id;
+    @JsonProperty("Category")
     private String categoryName;
 }
