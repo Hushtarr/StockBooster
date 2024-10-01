@@ -1,5 +1,7 @@
 package com.stockbooster.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.stockbooster.enums.Gender;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
@@ -13,6 +15,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(value = {"password","confirmPassword"})
 public class UserDTO {
     private Long id;
 
@@ -27,4 +30,6 @@ public class UserDTO {
     private String phone;
 
     private String password;
+
+    private String confirmPassword;
 }

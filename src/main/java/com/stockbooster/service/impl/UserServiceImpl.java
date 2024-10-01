@@ -19,12 +19,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findUserByEmail(String email) {
-        return mapper.convert(userRepository.findByEmail(email), UserDTO.class);
+        User user = userRepository.findAllByIsDeletedFalse().stream()
+                .filter(obj->obj.getEmail().equals(email))
+                .findFirst().orElseThrow(()->new UserNotFoundException("User not found"));
+        return mapper.convert(user, UserDTO.class);
     }
 
     @Override
     public UserDTO findUserById(Long id) {
-        return mapper.convert(userRepository.findById(id), UserDTO.class);
+        User user = userRepository.findAllByIsDeletedFalse().stream()
+                .filter(obj->obj.getId().equals(id))
+                .findFirst().orElseThrow(()->new UserNotFoundException("User not found"));
+        return mapper.convert(user, UserDTO.class);
     }
 
     @Override
@@ -48,8 +54,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
-        User user= userRepository.findById(id)
-                .orElseThrow(()->new UserNotFoundException("no such user"));
+        User user= userRepository.findById(id).orElseThrow(()->new UserNotFoundException("no such user"));
         user.setIsDeleted(true);
         userRepository.save(user);
     }
