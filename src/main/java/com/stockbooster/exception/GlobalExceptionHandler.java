@@ -33,5 +33,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.I_AM_A_TEAPOT)
                 .body(ApiInfo.failure(exception.getMessage()));
     }
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ApiInfo<Void>>handleProductNotFoundException(ProductNotFoundException exception) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ApiInfo.failure(exception.getMessage()));
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.stockbooster.service.impl;
 
 
+import com.stockbooster.client.CategoryClient;
 import com.stockbooster.dto.CategoryDTO;
 import com.stockbooster.entity.Category;
 import com.stockbooster.exception.CategoryNotFoundException;
@@ -8,9 +9,9 @@ import com.stockbooster.exception.IllegalArgumentException;
 import com.stockbooster.repository.CategoryRepository;
 import com.stockbooster.service.CategoryService;
 import com.stockbooster.util.MapperTool;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +21,19 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
     private final MapperTool mapper;
     private final CategoryRepository categoryRepository;
+    private final CategoryClient categoryClient;
+
+    @PostConstruct
+    public void init() {
+            List<CategoryDTO> categoryList = categoryClient.getCategories();
+            categoryList.forEach(categoryDTO -> {
+                Category categoryEntity = new Category();
+                categoryEntity.setCategoryName(categoryDTO.getCategoryName());
+                categoryRepository.save(categoryEntity);  // 保存到数据库
+            });
+        }
+
+
 
     @Override
     public void delete(Long id) {
@@ -30,6 +44,15 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDTO> findAll() {
+//        List<CategoryDTO>categoryList=categoryClient.getCategories();
+//        categoryList
+//                .forEach(category->
+//                {
+//                    String categoryName = category.getCategoryName();
+//                    CategoryDTO categoryDTO=new CategoryDTO();
+//                    categoryDTO.setCategoryName(categoryName);
+//                   save(categoryDTO);
+//                });
         return categoryRepository.findAllByIsDeletedFalse().stream()
                 .map(obj->mapper.convert(obj,CategoryDTO.class))
                 .collect(Collectors.toList());

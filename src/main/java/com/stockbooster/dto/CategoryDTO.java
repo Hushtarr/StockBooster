@@ -13,6 +13,6 @@ import lombok.*;
 public class CategoryDTO {
     @JsonProperty("Category ID")
     private Long id;
-    @JsonProperty("Category")
+    @JsonProperty("name")
     private String categoryName;
 }
