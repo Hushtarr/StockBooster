@@ -3,6 +3,8 @@ package com.stockbooster.controller;
 import com.stockbooster.dto.UserDTO;
 import com.stockbooster.dto.common.ApiInfo;
 import com.stockbooster.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,6 +13,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+@Tag(
+        name = "User Crud Services",
+        description = "More operations are coming "
+)
 @RestController
 @RequestMapping(
         value = "/api/",
@@ -43,6 +50,10 @@ public class UserController {
                 .body(ApiInfo.successReturn("Here is the user", user));
     }
 
+    @Operation(
+            summary = "creat an user REST APIs",
+            description = "creat an user"
+    )
     @PostMapping("admin/users")
     public ResponseEntity<ApiInfo<Void>>creatUser(@RequestBody UserDTO userDTO) {
         userService.save(userDTO);

@@ -29,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
             categoryList.forEach(categoryDTO -> {
                 Category categoryEntity = new Category();
                 categoryEntity.setCategoryName(categoryDTO.getCategoryName());
-                categoryRepository.save(categoryEntity);  // 保存到数据库
+                categoryRepository.save(categoryEntity);
             });
         }
 
@@ -44,15 +44,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDTO> findAll() {
-//        List<CategoryDTO>categoryList=categoryClient.getCategories();
-//        categoryList
-//                .forEach(category->
-//                {
-//                    String categoryName = category.getCategoryName();
-//                    CategoryDTO categoryDTO=new CategoryDTO();
-//                    categoryDTO.setCategoryName(categoryName);
-//                   save(categoryDTO);
-//                });
         return categoryRepository.findAllByIsDeletedFalse().stream()
                 .map(obj->mapper.convert(obj,CategoryDTO.class))
                 .collect(Collectors.toList());

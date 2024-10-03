@@ -3,6 +3,7 @@ package com.stockbooster.controller;
 import com.stockbooster.dto.ProductDTO;
 import com.stockbooster.dto.common.ApiInfo;
 import com.stockbooster.service.ProductService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -13,6 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(
+        name = "Product Crud Services",
+        description = "More operations are coming "
+)
 @RestController
 @RequestMapping(
         value = "/api/",

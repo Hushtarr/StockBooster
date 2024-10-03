@@ -4,6 +4,7 @@ package com.stockbooster.controller;
 import com.stockbooster.dto.CategoryDTO;
 import com.stockbooster.dto.common.ApiInfo;
 import com.stockbooster.service.CategoryService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,6 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+@Tag(
+        name = "Category Crud Services",
+        description = "More operations are coming "
+)
 @CrossOrigin("http://localhost:8080*")
 @RestController
 @RequestMapping(
